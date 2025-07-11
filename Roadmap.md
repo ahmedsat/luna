@@ -20,7 +20,7 @@ A structured roadmap to guide the development of Luna — a comprehensive, audit
 - [x] Define system scope and functional requirements
 - [x] Write Markdown spec and core models
 - [X] Draw ERD and identify table relationships
-- [ ] Design Go struct layout reflecting DB schema
+- [X] Design Go struct layout reflecting DB schema
 
 **Deliverables:**
 - ERD (image + .mwb/.dbml/.mermaid)
@@ -30,9 +30,9 @@ A structured roadmap to guide the development of Luna — a comprehensive, audit
 ---
 
 ### 🗃️ Milestone 2: Database Schema & Codegen (Week 2–3)
-- [ ] Create PostgreSQL schema
-- [ ] Configure `sqlc` for query-based codegen
-- [ ] Implement migrations (`golang-migrate` or `tern`)
+- [X] Create PostgreSQL schema
+- [ ] Set test DB up 
+- [ ] Implement Basic CRUD for Farms/Farmers/Ownerships
 - [ ] Seed scripts for dev/testing
 
 **Deliverables:**
