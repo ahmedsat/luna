@@ -12,8 +12,8 @@ func init() {
 
 type Farm struct {
 	ID                int64     `gorm:"primaryKey" json:"id"` // Format is EG/{id}
-	ArabicName        string    `gorm:"not null" json:"arabic_name"`
-	EnglishName       string    `gorm:"not null" json:"english_name"`
+	ArabicName        string    `gorm:"not null;unique" json:"arabic_name"`
+	EnglishName       string    `gorm:"not null;unique" json:"english_name"`
 	EngineerID        int64     `gorm:"not null;index" json:"engineer_id"`
 	ManagerID         int64     `gorm:"not null;index" json:"manager_id"`
 	Region            string    `gorm:"not null" json:"region"`

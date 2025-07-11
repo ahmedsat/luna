@@ -32,13 +32,13 @@ A structured roadmap to guide the development of Luna — a comprehensive, audit
 ### 🗃️ Milestone 2: Database Schema & Codegen (Week 2–3)
 - [X] Create PostgreSQL schema
 - [X] Set test DB up 
-- [ ] Implement Basic CRUD for models
-  - [ ] farms
-  - [ ] farmers
-  - [ ] livestock
-  - [ ] workers
-  - [ ] attachments
-  - [ ] locations
+- [X] Implement Basic CRUD for models
+  - [X] farms
+  - [X] farmers
+  - [X] livestock
+  - [X] workers
+  - [X] attachments
+  - [X] locations
 - [ ] Seed scripts for dev/testing
 
 **Deliverables:**

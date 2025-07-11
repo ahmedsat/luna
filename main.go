@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
@@ -44,24 +43,13 @@ func handelSubCommands(gdb *gorm.DB) error {
 }
 
 func test(db *gorm.DB) error {
-	farm := &models.Farm{
-		ArabicName:        "مزرعة الحماة",
-		EnglishName:       "Hamma Farm",
-		EngineerID:        1,
-		ManagerID:         1,
-		Region:            "القاهرة",
-		TotalArea:         4200.00,
-		CultivatedArea:    2000.00,
-		YearOfReclamation: 2017,
-		OwnershipDocument: "123456789"}
-	result := db.Create(farm)
-	if result.Error != nil {
-		return errors.Join(result.Error, errors.New("failed to create farm"))
+	farm := &models.Farm{}
+	err := db.Last(farm).Error
+	if err != nil {
+		return err
 	}
 
-	fmt.Println(farm.ID)
-	fmt.Println(farm.CreatedAt)
-	fmt.Println(farm.UpdatedAt)
+	fmt.Println(farm)
 
 	return nil
 }

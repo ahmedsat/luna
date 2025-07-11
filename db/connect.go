@@ -8,6 +8,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -26,7 +27,16 @@ func Connect() (db *gorm.DB, err error) {
 
 	conn.RawQuery = "sslmode=verify-ca;sslrootcert=ca.pem"
 
-	db, err = gorm.Open(postgres.Open(conn.String()), &gorm.Config{})
+	var log logger.Interface
+	if os.Getenv("ENV") == "development" {
+		log = logger.Default.LogMode(logger.Warn)
+	} else {
+		log = logger.Default.LogMode(logger.Silent)
+	}
+
+	db, err = gorm.Open(postgres.Open(conn.String()), &gorm.Config{
+		Logger: log,
+	})
 	if err != nil {
 		return db, errors.Join(err, errors.New("failed to connect to database"))
 	}
