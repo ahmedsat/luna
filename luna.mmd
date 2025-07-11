@@ -1,0 +1,83 @@
+erDiagram
+    FARM ||--o{ OWNERSHIP : has
+    FARM ||--o{ LOCATION : has
+    FARM ||--o{ LIVESTOCK : has
+    FARM ||--o{ DEMOGRAPHIC : has
+    FARM ||--o{ ATTACHMENT : has
+    FARM }|--|| FARMER : manager_is
+    FARM ||--|| ENGINEER : managed_by
+
+    FARMER ||--o{ OWNERSHIP : owns
+    FARMER ||--o{ FARM : manages
+
+    OWNERSHIP {
+        int farm_id
+        int farmer_id
+        float share
+        bool is_manager
+    }
+
+    FARM {
+        int id
+        string code
+        string arabic_name
+        string english_name
+        int engineer_id
+        float total_area
+        float cultivated_area
+        int year_of_reclamation
+        string ownership_document_path
+    }
+
+    FARMER {
+        int id
+        string national_id
+        string full_name
+        string personal_image
+        string id_image_front
+        string id_image_back
+        string phone
+    }
+
+    ENGINEER {
+        int id
+        string name
+    }
+
+    LOCATION {
+        int id
+        int farm_id
+        string description
+    }
+
+    LIVESTOCK {
+        int id
+        int farm_id
+        string type
+        int count
+    }
+
+    DEMOGRAPHIC {
+        int id
+        int farm_id
+        string age_group
+        string gender
+        int count
+    }
+
+    ATTACHMENT {
+        int id
+        int farm_id
+        string name
+        string file_path
+    }
+
+    AUDIT_LOG {
+        int id
+        string action
+        string table_name
+        string user
+        datetime timestamp
+        json old_value
+        json new_value
+    }
