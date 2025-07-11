@@ -8,7 +8,7 @@ CREATE TABLE engineers (
 
 -- FARMERS
 CREATE TABLE farmers (
-    national_id BIGINT PRIMARY KEY CHECK (char_length(national_id::text) = 14),
+    id BIGINT PRIMARY KEY CHECK (char_length(id::text) = 14),
     full_name TEXT NOT NULL,
     gender TEXT NOT NULL CHECK (gender IN ('Male', 'Female')),
     personal_image TEXT,
