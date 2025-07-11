@@ -3,6 +3,7 @@
     "avnadmin",
     "feddan",
     "godotenv",
+    "gorm",
     "joho",
     "sslmode",
     "sslrootcert"

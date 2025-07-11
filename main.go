@@ -6,45 +6,62 @@ import (
 	"os"
 
 	"github.com/ahmedsat/luna/db"
-
-	_ "github.com/joho/godotenv/autoload"
-	_ "github.com/lib/pq"
+	"github.com/ahmedsat/luna/models"
+	"gorm.io/gorm"
 )
 
 func main() {
-	err := db.Connect()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-	defer db.DB.Close()
 
-	err = db.DB.Ping()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-	err = handelSubcommands()
+	db, err := db.Connect()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 
-	fmt.Println("Exiting...")
+	err = handelSubCommands(db)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 }
 
-func handelSubcommands() error {
+func handelSubCommands(gdb *gorm.DB) error {
 	if len(os.Args) < 2 {
-		return errors.New("missing subcommand")
+		return fmt.Errorf("please provide a sub-command")
 	}
 
 	switch os.Args[1] {
-	case "migrate":
-		return db.Migrate()
-	case "seed":
-		return db.Seed()
 	default:
-		return fmt.Errorf("unknown subcommand: %s", os.Args[1])
+		return fmt.Errorf("invalid sub-command")
+	case "migrate":
+		return db.MigrateDb(gdb)
+	case "reset":
+		return db.RestDb(gdb)
+	case "test":
+		return test(gdb)
+	}
+}
+
+func test(db *gorm.DB) error {
+	farm := &models.Farm{
+		ArabicName:        "مزرعة الحماة",
+		EnglishName:       "Hamma Farm",
+		EngineerID:        1,
+		ManagerID:         1,
+		Region:            "القاهرة",
+		TotalArea:         4200.00,
+		CultivatedArea:    2000.00,
+		YearOfReclamation: 2017,
+		OwnershipDocument: "123456789"}
+	result := db.Create(farm)
+	if result.Error != nil {
+		return errors.Join(result.Error, errors.New("failed to create farm"))
 	}
 
+	fmt.Println(farm.ID)
+	fmt.Println(farm.CreatedAt)
+	fmt.Println(farm.UpdatedAt)
+
+	return nil
 }

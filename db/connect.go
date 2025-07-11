@@ -1,16 +1,18 @@
 package db
 
 import (
-	"database/sql"
 	"errors"
 	"fmt"
 	"net/url"
 	"os"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
-var DB *sql.DB
-
-func Connect() (err error) {
+func Connect() (db *gorm.DB, err error) {
 	SFmt := "postgres://avnadmin:%s@%s:%s/%s?sslmode=%s"
 
 	conn, _ := url.Parse(fmt.Sprintf(
@@ -24,26 +26,10 @@ func Connect() (err error) {
 
 	conn.RawQuery = "sslmode=verify-ca;sslrootcert=ca.pem"
 
-	DB, err = sql.Open("postgres", conn.String())
-
+	db, err = gorm.Open(postgres.Open(conn.String()), &gorm.Config{})
 	if err != nil {
-		return err
+		return db, errors.Join(err, errors.New("failed to connect to database"))
 	}
+
 	return
-}
-
-func Migrate() error {
-	bytes, err := os.ReadFile("sql/schema.sql")
-	if err != nil {
-		return err
-	}
-	_, err = DB.Exec(string(bytes))
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func Seed() error {
-	return errors.New("not implemented")
 }
